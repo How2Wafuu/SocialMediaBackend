@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model comment {
+  comment_id         Int       @id(map: "comment_id")
+  comment_body       String?
+  comment_user_id    Int?
+  comment_post_id    Int?
+  comment_created_at DateTime? @db.Timestamp(6)
+  post               post?     @relation(fields: [comment_post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "comment_post_fk")
+  user               user?     @relation(fields: [comment_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "comment_user_fk")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model picture {
+  pic_id      Int       @id(map: "picture_id")
+  pic_post_id Int?
+  picture     Bytes?
+  created_at  DateTime? @db.Timestamp(6)
+  post        post?     @relation(fields: [pic_post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "picture_post_fk")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model post {
+  post_title   String?
+  post_body    String?
+  post_id      Int       @id(map: "post_id")
+  post_status  Boolean?
+  post_like    Int?
+  created_at   DateTime? @db.Timestamp(6)
+  post_user_id Int?
+  comment      comment[]
+  picture      picture[]
+  user         user?     @relation(fields: [post_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "post_user_id")
+}
+
+model user {
+  user_id      Int       @id(map: "user_pk") @default(autoincrement())
+  username     String?   @db.VarChar
+  pwd          String?
+  created_at   DateTime? @db.Timestamp(6)
+  user_picture Bytes?
+  comment      comment[]
+  post         post[]
+}
