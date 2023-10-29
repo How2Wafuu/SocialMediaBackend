@@ -63,3 +63,4 @@ exports.getData = async (req,res) =>{
         res.status(404).send("Error! get user data");
     }
 }
+
