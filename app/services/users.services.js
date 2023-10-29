@@ -61,3 +61,15 @@ exports.getUserdata = async (uid) =>{
     });
     return result;
 }
+
+exports.getAllUsers = async () =>{
+    const result = await Users.findMany({
+        select:{
+            user_id : true,
+            username : true,
+            created_at : true,
+            user_picture : true,
+        }
+    });
+    return result;
+}

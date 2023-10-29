@@ -2,7 +2,7 @@ const usersServiecs = require("../services/users.services");
 const jwt = require('jsonwebtoken');
 
 exports.testRoute = async (req , res) =>{
-    res.status("200").send("EIEI");
+    res.status(200).send("EIEI");
 }
 
 exports.createUser = async (req, res) =>{
@@ -64,3 +64,12 @@ exports.getData = async (req,res) =>{
     }
 }
 
+exports.getAllUsers = async (req,res) =>{
+    try{
+        const result = await usersServiecs.getAllUsers();
+        res.status(200).send({success:true,data:result});
+    } catch (err){
+        console.log(err);
+        res.status(400).send({success:false,message:"Error!"});
+    }
+}

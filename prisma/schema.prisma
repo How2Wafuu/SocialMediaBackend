@@ -29,8 +29,8 @@ model picture {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model post {
   post_title   String?
-  post_body    String?
-  post_id      Int       @id(map: "post_id")
+  post_content String?
+  post_id      Int       @id(map: "post_id") @default(autoincrement())
   post_status  Boolean?
   post_like    Int?
   created_at   DateTime? @db.Timestamp(6)
