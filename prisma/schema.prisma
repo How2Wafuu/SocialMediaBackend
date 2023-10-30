@@ -49,3 +49,11 @@ model user {
   comment      comment[]
   post         post[]
 }
+
+model calendar {
+  id          Int       @id(map: "id") @default(autoincrement())
+  title       String?   @db.VarChar
+  description String?
+  start_time  DateTime? @db.Timestamp(6)
+  end_time    DateTime? @db.Timestamp(6)
+}
