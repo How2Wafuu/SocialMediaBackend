@@ -1,9 +1,7 @@
 const calendarService = require('../services/calendar.services');
 
-
-
 exports.testRoute = async (req , res) =>{
-    res.status(200).send("Calendar EIEI");
+    res.status(200).send("Calendar Test Route");
 }
 
 exports.createAppointment = async (req, res) =>{
@@ -11,7 +9,7 @@ exports.createAppointment = async (req, res) =>{
     const date = body.date;
     const title = body.title;
     const description = body.description;
-    if(!title || !description) return res.status(400).send({success:false,message:"Data not provided"});
+    if(!title || !description) return res.status(400).send({success:false,message:"Service error : Data not provided"});
 
     try{
         const Posts = await calendarService.createAppointment(date,title,description);
@@ -42,13 +40,18 @@ exports.getAppointment = async (req,res) =>{
     }
 }
 
+//Delete an Appointment by id
 exports.deleteAppointment = async (req,res) =>{
-    const date = req.params.date;
+    let id = req.body.id;
+    if (isNaN(id)) {
+        return res.status(400).send({ success: false, message: "Invalid ID provided" });
+    }
+    id = parseInt(id);
     try{
-        const result = await calendarService.deleteAppointment(date);
+        const result = await calendarService.deleteAppointment(id);
         res.status(200).send({success:true,data:result});
     } catch (err){
         console.log(err);
-        res.status(400).send({success:false,message:"Error!"});
+        res.status(400).send({success:false,message:"Error!"+err});
     }
 }
